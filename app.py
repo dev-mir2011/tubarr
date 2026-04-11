@@ -174,6 +174,6 @@ if __name__ == "__main__":
     debug = os.getenv("DEBUG", "false").lower() == "true"
     app.run(
         host="0.0.0.0",
-        port=int(os.getenv("INTERNAL_PORT")),
+        port=5000,
         debug=debug,
     )
