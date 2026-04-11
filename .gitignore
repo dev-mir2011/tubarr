@@ -4,3 +4,7 @@ test/
 data/
 downloads/
 youtube/
+.venv/
+venv/
+env/
+.env/
