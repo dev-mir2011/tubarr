@@ -2,3 +2,12 @@
 /docker
 /downloads
 /youtube
+/test
+README.md
+.git/
+push_gitea.bat
+.env
+.venv/
+venv/
+env/
+.env/
