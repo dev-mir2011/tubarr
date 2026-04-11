@@ -4,14 +4,17 @@ import threading
 import os
 import shutil
 import uuid
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-DOWNLOAD_DIR = "downloads"
-PHONK_DIR = "phonk"
+load_dotenv()
+
+DOWNLOAD_DIR = os.getenv("DOWNLOADS_DIR")
+YOUTUBE_DIR = os.getenv("YOUTUBE_DIR")
 
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
-os.makedirs(PHONK_DIR, exist_ok=True)
+os.makedirs(YOUTUBE_DIR, exist_ok=True)
 
 jobs = {}
 
@@ -19,7 +22,7 @@ jobs = {}
 def move_to_phonk():
     for file in os.listdir(DOWNLOAD_DIR):
         src = os.path.join(DOWNLOAD_DIR, file)
-        dst = os.path.join(PHONK_DIR, file)
+        dst = os.path.join(YOUTUBE_DIR, file)
 
         if os.path.isfile(src):
             shutil.move(src, dst)
@@ -40,7 +43,10 @@ def run_download(
 ):
     jobs[job_id]["status"] = "downloading"
 
-    cmd = ["yt-dlp"]
+    if os.getenv("OS").lower() == "windows":
+        cmd = ["python", "-m", "yt_dlp"]
+    else:
+        cmd = ["yt-dlp"]
 
     if audio_only:
         cmd.append("-x")
@@ -145,9 +151,13 @@ def index():
     return {
         "status": "running",
         "download_dir": DOWNLOAD_DIR,
-        "phonk_dir": PHONK_DIR
+        "youtube_dir": YOUTUBE_DIR,
     }
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("INTERNAL_PORT")),
+        debug=bool(os.getenv("DEBUG")),
+    )
