@@ -55,6 +55,7 @@ def run_download(
     extra_args=None,
 ):
     jobs[job_id]["status"] = "downloading"
+    save_jobs()
 
     cmd = [sys.executable, "-m", "yt_dlp"]
 

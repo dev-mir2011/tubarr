@@ -1,3 +1,4 @@
 push_gitea.bat
 push_github.bat
 test/
+data/jobs.json
