@@ -5,6 +5,8 @@ import os
 import shutil
 import uuid
 from dotenv import load_dotenv
+import json
+import sys
 
 app = Flask(__name__)
 
@@ -15,8 +17,19 @@ YOUTUBE_DIR = os.getenv("YOUTUBE_DIR")
 
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 os.makedirs(YOUTUBE_DIR, exist_ok=True)
+os.makedirs("data", exist_ok=True)
 
 jobs = {}
+if os.path.exists("data/jobs.json"):
+    with open("data/jobs.json", "r") as f:
+        jobs.update(json.load(f))
+jobs_lock = threading.Lock()
+
+
+def save_jobs():
+    with jobs_lock:
+        with open("data/jobs.json", "w") as f:
+            json.dump(jobs, f, indent=2)
 
 
 def move_to_phonk():
@@ -43,10 +56,7 @@ def run_download(
 ):
     jobs[job_id]["status"] = "downloading"
 
-    if os.getenv("OS").lower() == "windows":
-        cmd = ["python", "-m", "yt_dlp"]
-    else:
-        cmd = ["yt-dlp"]
+    cmd = [sys.executable, "-m", "yt_dlp"]
 
     if audio_only:
         cmd.append("-x")
@@ -80,10 +90,12 @@ def run_download(
             move_to_phonk()
 
         jobs[job_id]["status"] = "finished"
+        save_jobs()
 
     except Exception as e:
         jobs[job_id]["status"] = "error"
         jobs[job_id]["error"] = str(e)
+        save_jobs()
 
 
 @app.route("/download", methods=["POST"])
@@ -97,6 +109,7 @@ def download():
     job_id = str(uuid.uuid4())
 
     jobs[job_id] = {"status": "queued", "url": url}
+    save_jobs()
 
     # optional parameters
     output_dir = data.get("output_dir", DOWNLOAD_DIR)
@@ -127,7 +140,8 @@ def download():
     )
 
     thread.start()
-
+    jobs[job_id] = {"status": "started", "url": url}
+    save_jobs()
     return jsonify({"job_id": job_id, "status": "started"})
 
 
@@ -156,8 +170,9 @@ def index():
 
 
 if __name__ == "__main__":
+    debug = os.getenv("DEBUG", "false").lower() == "true"
     app.run(
         host="0.0.0.0",
         port=int(os.getenv("INTERNAL_PORT")),
-        debug=bool(os.getenv("DEBUG")),
+        debug=debug,
     )
