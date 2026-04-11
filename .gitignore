@@ -1,6 +1,6 @@
 push_gitea.bat
 push_github.bat
 test/
-/data
-/downloads
-/youtube
+data/
+downloads/
+youtube/
