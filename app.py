@@ -25,23 +25,56 @@ def move_to_phonk():
             shutil.move(src, dst)
 
 
-def run_download(job_id, url):
+def run_download(
+    job_id,
+    url,
+    output_dir=DOWNLOAD_DIR,
+    audio_only=True,
+    audio_format="mp3",
+    filename_template="%(title)s.%(ext)s",
+    embed_metadata=True,
+    embed_thumbnail=False,
+    add_metadata=True,
+    move_after=True,
+    extra_args=None,
+):
     jobs[job_id]["status"] = "downloading"
 
-    cmd = [
-        "yt-dlp",
-        "-x",
-        "--audio-format",
-        "mp3",
+    cmd = ["yt-dlp"]
+
+    if audio_only:
+        cmd.append("-x")
+
+    if audio_format:
+        cmd += ["--audio-format", audio_format]
+
+    if embed_metadata:
+        cmd.append("--embed-metadata")
+
+    if embed_thumbnail:
+        cmd.append("--embed-thumbnail")
+
+    if add_metadata:
+        cmd.append("--add-metadata")
+
+    cmd += [
         "-o",
-        f"{DOWNLOAD_DIR}/%(title)s.%(ext)s",
-        url,
+        f"{output_dir}/{filename_template}",
     ]
+
+    if extra_args:
+        cmd += extra_args
+
+    cmd.append(url)
 
     try:
         subprocess.run(cmd, check=True)
-        move_to_phonk()
+
+        if move_after:
+            move_to_phonk()
+
         jobs[job_id]["status"] = "finished"
+
     except Exception as e:
         jobs[job_id]["status"] = "error"
         jobs[job_id]["error"] = str(e)
@@ -57,18 +90,39 @@ def download():
 
     job_id = str(uuid.uuid4())
 
-    jobs[job_id] = {
-        "status": "queued",
-        "url": url
-    }
+    jobs[job_id] = {"status": "queued", "url": url}
 
-    thread = threading.Thread(target=run_download, args=(job_id, url))
+    # optional parameters
+    output_dir = data.get("output_dir", DOWNLOAD_DIR)
+    audio_only = data.get("audio_only", True)
+    audio_format = data.get("audio_format", "mp3")
+    filename_template = data.get("filename_template", "%(title)s.%(ext)s")
+    embed_metadata = data.get("embed_metadata", True)
+    embed_thumbnail = data.get("embed_thumbnail", False)
+    add_metadata = data.get("add_metadata", True)
+    move_after = data.get("move_after", True)
+    extra_args = data.get("extra_args", None)
+
+    thread = threading.Thread(
+        target=run_download,
+        args=(
+            job_id,
+            url,
+            output_dir,
+            audio_only,
+            audio_format,
+            filename_template,
+            embed_metadata,
+            embed_thumbnail,
+            add_metadata,
+            move_after,
+            extra_args,
+        ),
+    )
+
     thread.start()
 
-    return jsonify({
-        "job_id": job_id,
-        "status": "started"
-    })
+    return jsonify({"job_id": job_id, "status": "started"})
 
 
 @app.route("/status/<job_id>")
