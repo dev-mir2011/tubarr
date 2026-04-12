@@ -8,3 +8,5 @@ youtube/
 venv/
 env/
 .env/
+.vscode/
+vscode/
