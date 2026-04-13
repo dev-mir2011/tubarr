@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t youtube-downloader -f docker/Dockerfile .
+      - run: docker build -t tubarr -f docker/Dockerfile .

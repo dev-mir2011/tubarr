@@ -1,6 +1,6 @@
 # Youtube Downloader
 
-## This is an automated youtube video downloader.
+## This is an automated youtube video downloader
 
 ### **Goals** :-
 
