@@ -8,6 +8,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build image
-        run: docker build -t test-image /youtube-downloader/docker
+      - run: ls -R
+      - run: docker build -t test-image ./docker
