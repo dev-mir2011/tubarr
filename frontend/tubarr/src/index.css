@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0b0f14;
+  --bg-secondary: #141a21;
+  --bg-elevated: #1b2430;
+  --bg-hover: #202b38;
+
+  --text-primary: #e6edf3;
+  --text-secondary: #93a4b7;
+  --text-disabled: #607086;
+
+  --border-default: #263241;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  --accent-blue: #4db5ff;
+  --accent-cyan: #2dd4bf;
+  --accent-purple: #a78bfa;
+
+  --primary-red: #ff4d4d;
+  --red-hover: #ff6b6b;
+  --red-soft-bg: #2a1214;
+
+  --success: #3ddc97;
+  --warning: #ffb020;
+  --error: var(--primary-red);
+  --info: var(--accent-blue);
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-glow-blue: 0 0 12px rgba(77, 181, 255, 0.25);
+
+  --focus-ring: 0 0 0 2px rgba(77, 181, 255, 0.4);
+  --hover-overlay: rgba(255, 255, 255, 0.04);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+#root {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
