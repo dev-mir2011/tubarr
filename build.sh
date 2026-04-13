@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -f docker/DockerFile -t youtube-downloader .
+docker build -f docker/DockerFile -t tubarr .
