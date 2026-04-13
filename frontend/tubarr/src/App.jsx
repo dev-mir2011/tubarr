@@ -1,7 +1,7 @@
 function App() {
   return (
     <>
-      <input type="text" />
+      <input type="text" placeholder="Youtube URL" />
     </>
   );
 }
