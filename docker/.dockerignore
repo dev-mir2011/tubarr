@@ -11,3 +11,4 @@ push_gitea.bat
 venv/
 env/
 .env/
+frontend/
