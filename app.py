@@ -7,6 +7,7 @@ import uuid
 from dotenv import load_dotenv
 import json
 import sys
+import feedparser
 
 app = Flask(__name__)
 
@@ -99,6 +100,24 @@ def run_download(
         save_jobs()
 
 
+def clean_rss_feed(link: str):
+    feed = feedparser.parse(link)
+
+    videos = []
+
+    for entry in feed.entries:
+        videos.append(
+            {
+                "title": entry.title,
+                "url": entry.link,
+                "published": entry.published,
+                "id": entry.id,
+            }
+        )
+
+    return videos
+
+
 @app.route("/download", methods=["POST"])
 def download():
     data = request.json
@@ -159,6 +178,11 @@ def status(job_id):
 @app.route("/jobs")
 def all_jobs():
     return jsonify(jobs)
+
+
+@app.route("/feed")
+def feed():
+    print()
 
 
 @app.route("/")
