@@ -2,9 +2,9 @@ version: "3.9"
 
 services:
   downloader:
-    image: youtube-downloader:latest
+    image: tubarr:latest
 
-    container_name: youtube-downloader
+    container_name: tubarr
 
     ports:
       - "5000:5000"
