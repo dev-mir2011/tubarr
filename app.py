@@ -9,6 +9,8 @@ import json
 import sys
 import feedparser
 from urllib.parse import urlparse, parse_qs
+import re
+import requests
 
 app = Flask(__name__)
 
@@ -126,6 +128,22 @@ def youtube_url_to_id(url):
         return None
     return f"yt:video:{video_id}"
 
+
+def youtube_to_rss(url: str) -> str | None:
+    headers = {"User-Agent": "Mozilla/5.0"}
+
+    html = requests.get(url, headers=headers, timeout=10).text
+
+    match = re.search(r'"channelId":"(UC[\w-]+)"', html)
+
+    if not match:
+        return None
+
+    channel_id = match.group(1)
+
+    return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+
+
 @app.route("/download", methods=["POST"])
 def download():
     data = request.json
@@ -194,6 +212,65 @@ def feed():
     url = data.get("url")
     return jsonify(clean_rss_feed(url))
 
+
+@app.route("/subscribe", methods=["POST", "GET", "DELETE"])
+def subscribe():
+    global subscriptions
+
+    # safe load
+    try:
+        if os.path.exists("data/channels.json"):
+            with open("data/channels.json", "r") as f:
+                content = f.read().strip()
+                subscriptions = json.loads(content) if content else []
+        else:
+            subscriptions = []
+    except Exception:
+        subscriptions = []
+    if request.method == "GET":
+        return jsonify(subscriptions), 200
+
+    elif request.method == "POST":
+        data = request.get_json()
+        url = data.get("url")
+
+        if not url:
+            return jsonify({"error": "url required"}), 400
+
+        rss_url = youtube_to_rss(url)
+
+        sub = {
+            "id": str(uuid.uuid4()),
+            "youtube_url": url,
+            "rss_url": rss_url,
+            "last_seen_id": None,
+            "enabled": True,
+        }
+
+        subscriptions.append(sub)
+
+        with open("data/channels.json", "w") as f:
+            json.dump(subscriptions, f, indent=2)
+
+        return jsonify(sub), 201
+
+    elif request.method == "DELETE":
+        data = request.get_json()
+        sub_id = data.get("id")
+
+        new_list = [s for s in subscriptions if s["id"] != sub_id]
+
+        if len(new_list) == len(subscriptions):
+            return jsonify({"error": "not found"}), 404
+
+        subscriptions = new_list
+
+        with open("data/channels.json", "w") as f:
+            json.dump(subscriptions, f, indent=2)
+
+        return jsonify({"message": "removed"}), 200
+
+    return jsonify({"message": "405 Method Not Allowed"}), 405
 
 @app.route("/")
 def index():
