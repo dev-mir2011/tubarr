@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import json
 import sys
 import feedparser
+from urllib.parse import urlparse, parse_qs
 
 app = Flask(__name__)
 
@@ -118,6 +119,13 @@ def clean_rss_feed(link: str):
     return videos
 
 
+def youtube_url_to_id(url):
+    parsed = urlparse(url)
+    video_id = parse_qs(parsed.query).get("v", [None])[0]
+    if not video_id:
+        return None
+    return f"yt:video:{video_id}"
+
 @app.route("/download", methods=["POST"])
 def download():
     data = request.json
@@ -128,7 +136,7 @@ def download():
 
     job_id = str(uuid.uuid4())
 
-    jobs[job_id] = {"status": "queued", "url": url}
+    jobs[job_id] = {"status": "queued", "url": url, "id": youtube_url_to_id(url)}
     save_jobs()
 
     # optional parameters
@@ -160,7 +168,7 @@ def download():
     )
 
     thread.start()
-    jobs[job_id] = {"status": "started", "url": url}
+    jobs[job_id] = {"status": "started", "url": url, "id": youtube_url_to_id(url)}
     save_jobs()
     return jsonify({"job_id": job_id, "status": "started"})
 
@@ -180,9 +188,11 @@ def all_jobs():
     return jsonify(jobs)
 
 
-@app.route("/feed")
+@app.route("/feed", methods=["POST"])
 def feed():
-    print()
+    data = request.get_json()
+    url = data.get("url")
+    return jsonify(clean_rss_feed(url))
 
 
 @app.route("/")
