@@ -1,0 +1,34 @@
+name: Debug
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Gitea context
+        run: |
+          echo "gitea.repository = ${{ gitea.repository }}"
+          echo "gitea.actor = ${{ gitea.actor }}"
+          echo "gitea.ref = ${{ gitea.ref }}"
+          echo "gitea.sha = ${{ gitea.sha }}"
+          echo "gitea.server_url = ${{ gitea.server_url }}"
+
+      - name: Print env vars
+        run: |
+          echo "GITEA_REPOSITORY=$GITEA_REPOSITORY"
+          echo "GITEA_ACTOR=$GITEA_ACTOR"
+          echo "GITEA_REF=$GITEA_REF"
+          echo "GITEA_SHA=$GITEA_SHA"
+
+      - name: Docker info
+        run: |
+          docker version
+          docker info
+
+      - name: Test image tag
+        run: |
+          echo "IMAGE=192.168.1.100:3002/${{ gitea.repository }}:latest"
