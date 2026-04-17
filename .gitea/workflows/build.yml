@@ -12,11 +12,6 @@ jobs:
       - name: Login to Gitea Registry
         run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login ${{ gitea.server_url }} -u ${{ gitea.actor }} --password-stdin
 
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: npx semantic-release
-
       - name: Build image
         run: |
           docker build \
