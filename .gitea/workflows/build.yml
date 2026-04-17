@@ -8,4 +8,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t tubarr -f docker/Dockerfile .
+
+      - name: Login to Gitea Registry
+        run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login ${{ gitea.server_url }} -u ${{ gitea.actor }} --password-stdin
+
+      - name: Build image
+        run: |
+          docker build \
+            -t ${{ gitea.server_url }}/${{ gitea.repository }}:latest \
+            -f docker/Dockerfile .
+
+      - name: Push image
+        run: |
+          docker push ${{ gitea.server_url }}/${{ gitea.repository }}:latest
