@@ -2,13 +2,28 @@
   "branches": ["main"],
   "tagFormat": "v${version}",
   "plugins": [
-    ["@semantic-release/commit-analyzer", { "preset": "conventionalcommits" }],
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
     [
       "@semantic-release/exec",
       {
-        "publishCmd": "curl -X POST http://192.168.1.100:3002/api/v1/repos/dev-mir2011/tubarr/releases -H \"Authorization: token $GITEA_TOKEN\" -H \"Content-Type: application/json\" -d '{\"tag_name\":\"v${nextRelease.version}\",\"name\":\"v${nextRelease.version}\",\"body\":${JSON.stringify(nextRelease.notes)}}'"
+        "publishCmd": "curl -s -X POST http://192.168.1.100:3002/api/v1/repos/dev-mir2011/tubarr/releases -H \"Authorization: token $GITEA_TOKEN\" -H \"Content-Type: application/json\" -d '{\"tag_name\":\"v${nextRelease.version}\",\"name\":\"v${nextRelease.version}\",\"body\":${JSON.stringify(nextRelease.notes)}}'"
       }
     ],
     [
