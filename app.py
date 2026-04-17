@@ -23,10 +23,10 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 os.makedirs(YOUTUBE_DIR, exist_ok=True)
 os.makedirs("data", exist_ok=True)
 
-jobs = {}
+jobs = []
 if os.path.exists("data/jobs.json"):
     with open("data/jobs.json", "r") as f:
-        jobs.update(json.load(f))
+        jobs = json.load(f)
 jobs_lock = threading.Lock()
 
 
@@ -46,7 +46,6 @@ def move_to_phonk():
 
 
 def run_download(
-    job_id,
     url,
     output_dir=DOWNLOAD_DIR,
     audio_only=True,
@@ -58,7 +57,7 @@ def run_download(
     move_after=True,
     extra_args=None,
 ):
-    jobs[job_id]["status"] = "downloading"
+    jobs[-1]["status"] = "downloading"
     save_jobs()
 
     cmd = [sys.executable, "-m", "yt_dlp"]
@@ -94,12 +93,12 @@ def run_download(
         if move_after:
             move_to_phonk()
 
-        jobs[job_id]["status"] = "finished"
+        jobs[-1]["status"] = "finished"
         save_jobs()
 
     except Exception as e:
-        jobs[job_id]["status"] = "error"
-        jobs[job_id]["error"] = str(e)
+        jobs[-1]["status"] = "error"
+        jobs[-1]["error"] = str(e)
         save_jobs()
 
 
@@ -144,6 +143,13 @@ def youtube_to_rss(url: str) -> str | None:
     return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
 
 
+def check_for_videos():
+    with open("data/channels.json") as f1:
+        channels = json.load(f1)
+    with open("data/jobs.json") as f2:
+        jobs = json.load(f2)
+
+
 @app.route("/download", methods=["POST"])
 def download():
     data = request.json
@@ -152,9 +158,7 @@ def download():
     if not url:
         return jsonify({"error": "url required"}), 400
 
-    job_id = str(uuid.uuid4())
-
-    jobs[job_id] = {"status": "queued", "url": url, "id": youtube_url_to_id(url)}
+    jobs.append({"status": "queued", "url": url, "id": youtube_url_to_id(url)})
     save_jobs()
 
     # optional parameters
@@ -171,7 +175,6 @@ def download():
     thread = threading.Thread(
         target=run_download,
         args=(
-            job_id,
             url,
             output_dir,
             audio_only,
@@ -186,14 +189,22 @@ def download():
     )
 
     thread.start()
-    jobs[job_id] = {"status": "started", "url": url, "id": youtube_url_to_id(url)}
+    jobs[-1] = {"status": "started", "url": url, "id": youtube_url_to_id(url)}
     save_jobs()
-    return jsonify({"job_id": job_id, "status": "started"})
+    return jsonify(
+        {
+            "job_id": jobs.index(
+                {"status": "started", "url": url, "id": youtube_url_to_id(url)}
+            ),
+            "status": "started",
+        }
+    )
 
 
 @app.route("/status/<job_id>")
 def status(job_id):
-    job = jobs.get(job_id)
+    job_id = int(job_id)
+    job = jobs[job_id]
 
     if not job:
         return jsonify({"error": "job not found"}), 404
@@ -271,6 +282,7 @@ def subscribe():
         return jsonify({"message": "removed"}), 200
 
     return jsonify({"message": "405 Method Not Allowed"}), 405
+
 
 @app.route("/")
 def index():
