@@ -1,0 +1,35 @@
+name: Semantic Release (Gitea → GitHub)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps
+        run: npm ci
+
+      # IMPORTANT: allow pushing back to GitHub repo
+      - name: Configure Git
+        run: |
+          git config user.name "gitea-bot"
+          git config user.email "bot@gitea.local"
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          GIT_AUTHOR_NAME: gitea-bot
+          GIT_AUTHOR_EMAIL: bot@gitea.local
+        run: npx semantic-release
