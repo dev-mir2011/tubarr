@@ -10,7 +10,19 @@
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    "@semantic-release/github",
-    "@semantic-release/git"
+    [
+      "@semantic-release/github",
+      {
+        "githubUrl": "http://192.168.1.100:3002",
+        "githubApiPathPrefix": "/api/v1"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md", "package.json"],
+        "message": "chore(release): v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ]
   ]
 }
