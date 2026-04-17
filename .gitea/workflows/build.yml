@@ -15,9 +15,9 @@ jobs:
       - name: Build image
         run: |
           docker build \
-            -t ${{ gitea.server_url }}/${{ gitea.repository }}:latest \
+            -t 192.168.1.100:3002/${{ gitea.repository }}:latest \
             -f docker/Dockerfile .
 
       - name: Push image
         run: |
-          docker push ${{ gitea.server_url }}/${{ gitea.repository }}:latest
+          docker push 192.168.1.100:3002/${{ gitea.repository }}:latest
