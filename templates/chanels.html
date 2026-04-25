@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Tubarr</title>
+</head>
+
+<body>
+    <div class="container flex flex-col gap-4">
+
+        <a href="/" class="nav-link">Home</a>
+        <a href="/jobs" class="nav-link">Jobs</a>
+
+        <div>
+            <h1 class="text-2xl">Channels</h1>
+            <p class="text-sm text-muted">Monitor YouTube channels</p>
+        </div>
+
+        <!-- add -->
+        <div class="card p-3 flex flex-col gap-3">
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Channel URL</label>
+                <input id="url" class="input" placeholder="https://youtube.com/@channel" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Output Directory</label>
+                <input id="output_dir" class="input" placeholder="downloads / music" value="downloads" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Filename Template</label>
+                <input id="filename_template" class="input font-mono" placeholder="%(uploader)s/%(title)s.%(ext)s"
+                    value="%(uploader)s/%(title)s.%(ext)s" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Audio Format</label>
+                <input id="audio_format" class="input" placeholder="mp3 / flac" value="mp3" />
+            </div>
+
+            <div class="grid grid-3 gap-2">
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="audio_only" />
+                    <span class="text-sm">Audio Only</span>
+                </label>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="embed_metadata" checked />
+                    <span class="text-sm">Embed Metadata</span>
+                </label>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="embed_thumbnail" checked />
+                    <span class="text-sm">Embed Thumbnail</span>
+                </label>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="add_metadata" checked />
+                    <span class="text-sm">Add Metadata</span>
+                </label>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="move_after" checked />
+                    <span class="text-sm">Move After</span>
+                </label>
+
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Extra args (one per line)</label>
+                <textarea id="extra_args" class="input font-mono" rows="3"></textarea>
+            </div>
+
+            <div class="flex gap-2">
+                <button id="addBtn" class="btn">Add Channel</button>
+                <div id="status" class="text-sm text-muted flex items-center"></div>
+            </div>
+
+        </div>
+
+        <div class="flex justify-between items-center">
+            <h2 class="text-lg">Subscribed</h2>
+            <button id="refreshBtn" class="btn">Refresh</button>
+        </div>
+
+        <div id="channels" class="flex flex-col gap-2"></div>
+
+    </div>
+    <script src="{{ url_for('static', filename='js/chanels.js') }}"></script>
+</body>
+
+</html>

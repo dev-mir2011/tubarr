@@ -12,6 +12,8 @@ env/
 .vscode/
 vscode/
 .github
+cache/
+data/
 
 # node deps
 node_modules/

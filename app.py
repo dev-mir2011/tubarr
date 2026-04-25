@@ -1,157 +1,43 @@
-from flask import Flask, request, jsonify
-import subprocess
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import threading
 import os
-import shutil
 import uuid
-from dotenv import load_dotenv
 import json
-import sys
-import feedparser
-from urllib.parse import urlparse, parse_qs
-import re
-import requests
+from urllib.parse import unquote
 
-app = Flask(__name__)
+from helper_functions import *
 
-load_dotenv()
-
-DOWNLOAD_DIR = os.getenv("DOWNLOADS_DIR")
-YOUTUBE_DIR = os.getenv("YOUTUBE_DIR")
+app = Flask(
+    __name__, template_folder="templates", static_folder="static", static_url_path="/"
+)
 
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 os.makedirs(YOUTUBE_DIR, exist_ok=True)
 os.makedirs("data", exist_ok=True)
 
-jobs = []
-if os.path.exists("data/jobs.json"):
-    with open("data/jobs.json", "r") as f:
-        jobs = json.load(f)
-jobs_lock = threading.Lock()
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
-def save_jobs():
-    with jobs_lock:
-        with open("data/jobs.json", "w") as f:
-            json.dump(jobs, f, indent=2)
-
-
-def move_to_phonk():
-    for file in os.listdir(DOWNLOAD_DIR):
-        src = os.path.join(DOWNLOAD_DIR, file)
-        dst = os.path.join(YOUTUBE_DIR, file)
-
-        if os.path.isfile(src):
-            shutil.move(src, dst)
-
-
-def run_download(
-    url,
-    output_dir=DOWNLOAD_DIR,
-    audio_only=True,
-    audio_format="mp3",
-    filename_template="%(title)s.%(ext)s",
-    embed_metadata=True,
-    embed_thumbnail=False,
-    add_metadata=True,
-    move_after=True,
-    extra_args=None,
-):
-    jobs[-1]["status"] = "downloading"
-    save_jobs()
-
-    cmd = [sys.executable, "-m", "yt_dlp"]
-
-    if audio_only:
-        cmd.append("-x")
-
-    if audio_format:
-        cmd += ["--audio-format", audio_format]
-
-    if embed_metadata:
-        cmd.append("--embed-metadata")
-
-    if embed_thumbnail:
-        cmd.append("--embed-thumbnail")
-
-    if add_metadata:
-        cmd.append("--add-metadata")
-
-    cmd += [
-        "-o",
-        f"{output_dir}/{filename_template}",
-    ]
-
-    if extra_args:
-        cmd += extra_args
-
-    cmd.append(url)
-
-    try:
-        subprocess.run(cmd, check=True)
-
-        if move_after:
-            move_to_phonk()
-
-        jobs[-1]["status"] = "finished"
-        save_jobs()
-
-    except Exception as e:
-        jobs[-1]["status"] = "error"
-        jobs[-1]["error"] = str(e)
-        save_jobs()
-
-
-def clean_rss_feed(link: str):
-    feed = feedparser.parse(link)
-
-    videos = []
-
-    for entry in feed.entries:
-        videos.append(
-            {
-                "title": entry.title,
-                "url": entry.link,
-                "published": entry.published,
-                "id": entry.id,
-            }
-        )
-
-    return videos
-
-
-def youtube_url_to_id(url):
-    parsed = urlparse(url)
-    video_id = parse_qs(parsed.query).get("v", [None])[0]
-    if not video_id:
-        return None
-    return f"yt:video:{video_id}"
-
-
-def youtube_to_rss(url: str) -> str | None:
-    headers = {"User-Agent": "Mozilla/5.0"}
-
-    html = requests.get(url, headers=headers, timeout=10).text
-
-    match = re.search(r'"channelId":"(UC[\w-]+)"', html)
-
-    if not match:
-        return None
-
-    channel_id = match.group(1)
-
-    return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
-
-
-def check_for_videos():
-    with open("data/channels.json") as f1:
-        channels = json.load(f1)
-    with open("data/jobs.json") as f2:
-        jobs = json.load(f2)
-
-
-@app.route("/download", methods=["POST"])
+@app.route("/download")
 def download():
+    return render_template("download.html")
+
+
+@app.route("/jobs")
+def jobs_():
+    return render_template("jobs.html")
+
+
+@app.route("/channels")
+def channels():
+    return render_template("chanels.html")
+
+
+@app.route("/api/download", methods=["POST"])
+def api_download():
     data = request.json
     url = data.get("url")
 
@@ -201,8 +87,8 @@ def download():
     )
 
 
-@app.route("/status/<job_id>")
-def status(job_id):
+@app.route("/api/status/<job_id>")
+def api_status(job_id):
     job_id = int(job_id)
     job = jobs[job_id]
 
@@ -212,20 +98,22 @@ def status(job_id):
     return jsonify(job)
 
 
-@app.route("/jobs")
-def all_jobs():
+@app.route("/api/jobs")
+def api_all_jobs():
     return jsonify(jobs)
 
 
-@app.route("/feed", methods=["POST"])
-def feed():
+@app.route("/api/feed", methods=["POST"])
+def api_feed():
     data = request.get_json()
     url = data.get("url")
-    return jsonify(clean_rss_feed(url))
+    cleaned = clean_rss_feed(youtube_to_rss(url))
+
+    return jsonify(cleaned)
 
 
-@app.route("/subscribe", methods=["POST", "GET", "DELETE"])
-def subscribe():
+@app.route("/api/subscribe", methods=["POST", "GET", "DELETE"])
+def api_subscribe():
     global subscriptions
 
     # safe load
@@ -244,6 +132,7 @@ def subscribe():
     elif request.method == "POST":
         data = request.get_json()
         url = data.get("url")
+        prefrences = data.get("prefrences")
 
         if not url:
             return jsonify({"error": "url required"}), 400
@@ -256,6 +145,7 @@ def subscribe():
             "rss_url": rss_url,
             "last_seen_id": None,
             "enabled": True,
+            "prefrences": prefrences,
         }
 
         subscriptions.append(sub)
@@ -284,17 +174,56 @@ def subscribe():
     return jsonify({"message": "405 Method Not Allowed"}), 405
 
 
-@app.route("/")
-def index():
-    return {
-        "status": "running",
-        "download_dir": DOWNLOAD_DIR,
-        "youtube_dir": YOUTUBE_DIR,
-    }
+@app.route("/api/check_for_videos", methods=["GET"])
+def api_check_for_videos():
+    new_videos = check_for_videos()
+    return jsonify({"code": 200, "New Videos": new_videos}), 200
+
+
+@app.route("/api/thumbs/<path:name>")
+def api_thumbs(name):
+    name = unquote(name)
+    return send_from_directory("cache/thumb", name)
+
+@app.route("/api/videos/<path:name>")
+def api_videos(name):
+    name = unquote(name)
+    return send_from_directory(YOUTUBE_DIR, name)
+
+
+@app.route("/api/videosDownloaded")
+def api_videos_downloaded():
+    videos = []
+
+    for root, _, files in os.walk(YOUTUBE_DIR):
+        for file in files:
+            if file.lower().endswith(".mkv"):
+
+                full_path = os.path.join(root, file)
+
+                rel_path = os.path.relpath(full_path, YOUTUBE_DIR)
+                rel_path = rel_path.replace("\\", "/")  # 🔥 FIX 1
+
+                thumb_rel_path = os.path.splitext(rel_path)[0] + ".jpg"
+                thumb_rel_path = thumb_rel_path.replace("\\", "/")
+
+                videos.append(
+                    {
+                        "name": file,
+                        "path": rel_path,
+                        "thumbnail": thumb_rel_path,
+                        "thumbnail_full": os.path.join(
+                            "cache/thumb", thumb_rel_path
+                        ).replace("\\", "/"),
+                    }
+                )
+
+    return jsonify(videos)
 
 
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "false").lower() == "true"
+    threading.Thread(target=check_for_videos, daemon=True).start()
     app.run(
         host="0.0.0.0",
         port=5000,
