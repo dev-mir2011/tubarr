@@ -1,3 +1,9 @@
+## [0.3.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.2.1...v0.3.0) (2026-04-25)
+
+### Features
+
+* Minimum Viable Product ([cad5752](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/cad5752ec400ae7cd34bbfae6f65e652e26c97b7))
+
 ## [0.2.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.2.0...v0.2.1) (2026-04-17)
 
 ### Performance Improvements
