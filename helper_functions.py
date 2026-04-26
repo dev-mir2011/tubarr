@@ -9,6 +9,7 @@ from urllib.parse import urlparse, parse_qs
 import feedparser
 import requests
 import time
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -45,17 +46,22 @@ def save_jobs():
 
 
 def move_to_media():
-    for name in os.listdir(DOWNLOAD_DIR):
-        src = os.path.join(DOWNLOAD_DIR, name)
-        dst = os.path.join(YOUTUBE_DIR, name)
+    download = Path(DOWNLOAD_DIR)
+    youtube = Path(YOUTUBE_DIR)
 
-        if os.path.isdir(src) and os.path.exists(dst):
+    for src in download.iterdir():
+        dst = youtube / src.name
+
+        if src.is_dir() and dst.exists():
             # merge directories
-            for item in os.listdir(src):
-                shutil.move(os.path.join(src, item), os.path.join(dst, item))
-            os.rmdir(src)
+            for item in src.iterdir():
+                target = dst / item.name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(item), str(target))
+            src.rmdir()
         else:
-            shutil.move(src, dst)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(src), str(dst))
 
 
 def run_download(

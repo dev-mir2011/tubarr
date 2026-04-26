@@ -5,6 +5,12 @@ function download() {
   );
   window.location.href = "/download";
 }
+
+async function thumbnails() {
+  const res = await fetch("/api/generate_thumbnail_cache");
+  await res.json(); // or await res.text()
+  location.reload();
+}
 async function loadVideos() {
   const grid = document.getElementById("video-grid");
   grid.innerHTML = "Loading...";
