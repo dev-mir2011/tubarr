@@ -1,3 +1,9 @@
+## [0.3.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.0...v0.3.1) (2026-04-26)
+
+### Bug Fixes
+
+* Dockerfile missing dependency ([55f42f3](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/55f42f3510bbabb817b40a54d851c9c49a993d1a))
+
 ## [0.3.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.2.1...v0.3.0) (2026-04-25)
 
 ### Features
