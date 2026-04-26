@@ -1,3 +1,9 @@
+## [0.5.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.4.0...v0.5.0) (2026-04-26)
+
+### Features
+
+* Added Basic Settings ([9b49202](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/9b49202384c0816d2c960faa4e96f8f1086a3d3b))
+
 ## [0.4.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.2...v0.4.0) (2026-04-26)
 
 ### Features
