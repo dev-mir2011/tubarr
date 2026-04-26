@@ -1,3 +1,9 @@
+## [0.4.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.2...v0.4.0) (2026-04-26)
+
+### Features
+
+* added build thumbnail cache api endpoint ([29dc02a](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/29dc02ad13ca619c9ee6b63ff71368ec006c2618))
+
 ## [0.3.2](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.1...v0.3.2) (2026-04-26)
 
 ### Bug Fixes
