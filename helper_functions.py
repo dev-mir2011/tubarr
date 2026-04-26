@@ -108,12 +108,11 @@ def run_download(
     cmd.append(url)
 
     try:
-        # only serialize yt-dlp post processing
         with download_lock:
             subprocess.run(cmd, check=True)
 
-        if move_after:
-            move_to_media()
+            if move_after:
+                move_to_media()
 
         jobs[job_index]["status"] = "finished"
         save_jobs()
