@@ -1,3 +1,9 @@
+## [0.5.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.5.0...v0.5.1) (2026-04-26)
+
+### Bug Fixes
+
+* Path issues ([7db2149](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/7db21492f2fc5e19ead354d81addc7e2e3e9fe79))
+
 ## [0.5.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.4.0...v0.5.0) (2026-04-26)
 
 ### Features
