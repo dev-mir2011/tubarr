@@ -1,3 +1,9 @@
+## [0.6.3](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.2...v0.6.3) (2026-04-26)
+
+### Bug Fixes
+
+* threading problem ([326719f](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/326719f93e07a180b8ce38897c22b731635f1725))
+
 ## [0.6.2](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.1...v0.6.2) (2026-04-26)
 
 ### Bug Fixes
