@@ -1,3 +1,9 @@
+## [0.3.2](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.1...v0.3.2) (2026-04-26)
+
+### Bug Fixes
+
+* requirements ([77a84c2](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/77a84c22059a0f904e3fe59dc63c6036298ced8c))
+
 ## [0.3.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.3.0...v0.3.1) (2026-04-26)
 
 ### Bug Fixes
