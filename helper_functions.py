@@ -64,31 +64,23 @@ def move_to_media():
             shutil.move(str(src), str(dst))
 
 
+download_lock = threading.Lock()
+
+
 def run_download(
     url,
-    output_dir=DOWNLOAD_DIR,
-    audio_only=True,
-    audio_format="mp3",
-    filename_template="%(title)s.%(ext)s",
-    embed_metadata=True,
-    embed_thumbnail=False,
-    add_metadata=True,
-    move_after=True,
-    extra_args=None,
+    output_dir,
+    audio_only,
+    audio_format,
+    filename_template,
+    embed_metadata,
+    embed_thumbnail,
+    add_metadata,
+    move_after,
+    extra_args,
+    job_index,
 ):
-    """
-    url,
-    output_dir=DOWNLOAD_DIR,
-    audio_only=True,
-    audio_format="mp3",
-    filename_template="%(title)s.%(ext)s",
-    embed_metadata=True,
-    embed_thumbnail=False,
-    add_metadata=True,
-    move_after=True,
-    extra_args=None,
-    """
-    jobs[-1]["status"] = "downloading"
+    jobs[job_index]["status"] = "downloading"
     save_jobs()
 
     cmd = [sys.executable, "-m", "yt_dlp"]
@@ -108,10 +100,7 @@ def run_download(
     if add_metadata:
         cmd.append("--add-metadata")
 
-    cmd += [
-        "-o",
-        f"{output_dir}/{filename_template}",
-    ]
+    cmd += ["-o", f"{output_dir}/{filename_template}"]
 
     if extra_args:
         cmd += extra_args
@@ -119,17 +108,19 @@ def run_download(
     cmd.append(url)
 
     try:
-        subprocess.run(cmd, check=True)
+        # only serialize yt-dlp post processing
+        with download_lock:
+            subprocess.run(cmd, check=True)
 
         if move_after:
             move_to_media()
 
-        jobs[-1]["status"] = "finished"
+        jobs[job_index]["status"] = "finished"
         save_jobs()
 
     except Exception as e:
-        jobs[-1]["status"] = "error"
-        jobs[-1]["error"] = str(e)
+        jobs[job_index]["status"] = "error"
+        jobs[job_index]["error"] = str(e)
         save_jobs()
 
 
