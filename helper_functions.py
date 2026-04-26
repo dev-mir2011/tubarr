@@ -233,10 +233,13 @@ def check_for_videos():
 THUMB_DIR = f"{CACHE_DIR}/thumb"
 
 
+VIDEO_EXTENSIONS = (".mkv", ".mp4", ".webm", ".mov", ".avi", ".mp3", ".m4a")
+
+
 def build_cache():
     for root, dirs, files in os.walk(YOUTUBE_DIR):
         for file in files:
-            if not file.lower().endswith(".mkv"):
+            if not file.lower().endswith(VIDEO_EXTENSIONS):
                 continue
 
             video_path = os.path.join(root, file)
