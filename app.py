@@ -180,10 +180,17 @@ def api_check_for_videos():
     return jsonify({"code": 200, "New Videos": new_videos}), 200
 
 
+@app.route("/api/generate_thumbnail_cache", methods=["GET"])
+def api_generate_thumbnail_cache():
+    build_cache()
+    return jsonify({"code": 200, "message": "Cache Built"}), 200
+
+
 @app.route("/api/thumbs/<path:name>")
 def api_thumbs(name):
     name = unquote(name)
     return send_from_directory("cache/thumb", name)
+
 
 @app.route("/api/videos/<path:name>")
 def api_videos(name):
