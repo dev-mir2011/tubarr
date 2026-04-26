@@ -1,3 +1,9 @@
+## [0.6.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.5.1...v0.6.0) (2026-04-26)
+
+### Features
+
+* Added Support for all video media formats ([11a97fd](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/11a97fd979d4bc0fd4abcc496de5c45e23d2093d))
+
 ## [0.5.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.5.0...v0.5.1) (2026-04-26)
 
 ### Bug Fixes
