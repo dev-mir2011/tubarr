@@ -1,3 +1,9 @@
+## [0.6.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.0...v0.6.1) (2026-04-26)
+
+### Bug Fixes
+
+* channel Scan exit ([9b7a78b](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/9b7a78bff09c7cded30c7773295f7ed1269e3dfd))
+
 ## [0.6.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.5.1...v0.6.0) (2026-04-26)
 
 ### Features
