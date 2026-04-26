@@ -171,6 +171,8 @@ def youtube_to_rss(url: str) -> str | None:
 
 def check_for_videos():
     global jobs
+    with open("data/settings.json") as f:
+        settings = json.load(f)
 
     while True:
         with open("data/channels.json") as f1:
@@ -218,7 +220,7 @@ def check_for_videos():
                 save_jobs()
                 return True
 
-        time.sleep(86400)
+        time.sleep(int(settings["channel_scan_interval"]))
         return False
 
 
@@ -262,6 +264,15 @@ def build_cache():
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
+
+
+def generate_thumbnail_cache():
+    with open("data/settings.json") as f:
+        settings = json.load(f)
+    while True:
+        build_cache()
+        time.sleep(int(settings["generate_thumbnail_cache_interval"]))
+
 
 if __name__ == "__main__":
     build_cache()

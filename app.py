@@ -35,6 +35,10 @@ def jobs_():
 def channels():
     return render_template("chanels.html")
 
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
 
 @app.route("/api/download", methods=["POST"])
 def api_download():
@@ -198,6 +202,42 @@ def api_videos(name):
     return send_from_directory(YOUTUBE_DIR, name)
 
 
+@app.route("/api/settings", methods=["GET", "POST"])
+def api_settings():
+    if request.method == "GET":
+        if os.path.exists("data/settings.json"):
+            with open("data/settings.json", "r") as f:
+                content = f.read().strip()
+                settings = (
+                    json.loads(content)
+                    if content
+                    else {
+                        "channel_scan_interval": 86400,
+                        "generate_thumbnail_cache_interval": 86400,
+                    }
+                )
+        else:
+            settings = {
+                "channel_scan_interval": 86400,
+                "generate_thumbnail_cache_interval": 86400,
+            }
+
+        return jsonify({"code": 200, "settings": settings}), 200
+    if request.method == "POST":
+        data = request.json
+
+        settings = {
+            "channel_scan_interval": data["channel_scan_interval"],
+            "generate_thumbnail_cache_interval": data[
+                "generate_thumbnail_cache_interval"
+            ],
+        }
+        with open("data/settings.json", "w") as f:
+            json.dump(settings, f, indent=2)
+
+        return jsonify({"code": 201, "message": "Settings Updated Succesfully"}), 201
+
+
 @app.route("/api/videosDownloaded")
 def api_videos_downloaded():
     videos = []
@@ -231,6 +271,7 @@ def api_videos_downloaded():
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "false").lower() == "true"
     threading.Thread(target=check_for_videos, daemon=True).start()
+    threading.Thread(target=generate_thumbnail_cache, daemon=True).start()
     app.run(
         host="0.0.0.0",
         port=5000,
