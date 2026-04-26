@@ -177,6 +177,7 @@ def youtube_to_rss(url: str) -> str | None:
 
 def check_for_videos():
     global jobs
+
     with open("data/settings.json") as f:
         settings = json.load(f)
 
@@ -187,6 +188,8 @@ def check_for_videos():
         with open("data/jobs.json") as f2:
             jobs = json.load(f2)
 
+        existing_ids = {job["id"] for job in jobs}
+
         for channel in channels:
             videos = clean_rss_feed(channel["rss_url"])
             if not videos:
@@ -194,14 +197,14 @@ def check_for_videos():
 
             latest = videos[0]
 
-            if not jobs or latest["id"] != jobs[-1]["id"]:
-                jobs.append(
-                    {
-                        "status": "queued",
-                        "url": latest["url"],
-                        "id": latest["id"],
-                    }
-                )
+            if latest["id"] not in existing_ids:
+                job = {
+                    "status": "started",
+                    "url": latest["url"],
+                    "id": latest["id"],
+                }
+
+                jobs.append(job)
                 save_jobs()
 
                 thread = threading.Thread(
@@ -222,12 +225,7 @@ def check_for_videos():
 
                 thread.start()
 
-                jobs[-1]["status"] = "started"
-                save_jobs()
-                return True
-
         time.sleep(int(settings["channel_scan_interval"]))
-        return False
 
 
 THUMB_DIR = f"{CACHE_DIR}/thumb"
