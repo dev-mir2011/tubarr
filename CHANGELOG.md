@@ -1,3 +1,9 @@
+## [0.6.5](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.4...v0.6.5) (2026-04-30)
+
+### Bug Fixes
+
+* manual download endpoint not passing id ([9645483](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/964548398a7b41f536047254c2236c0e7638e7fc))
+
 ## [0.6.4](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.3...v0.6.4) (2026-04-30)
 
 ### Bug Fixes
