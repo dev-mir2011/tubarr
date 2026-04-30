@@ -220,6 +220,54 @@ def check_for_videos():
         time.sleep(int(settings["channel_scan_interval"]))
 
 
+def scan_once():
+    global jobs
+
+    with open("data/channels.json") as f1:
+            channels = json.load(f1)
+
+    with open("data/jobs.json") as f2:
+            jobs = json.load(f2)
+
+    existing_ids = {job["id"] for job in jobs}
+
+    for channel in channels:
+        videos = clean_rss_feed(channel["rss_url"])
+        if not videos:
+                continue
+
+        latest = videos[0]
+
+        if latest["id"] not in existing_ids:
+            job = {
+                    "status": "started",
+                    "url": latest["url"],
+                    "id": latest["id"],
+                }
+
+            jobs.append(job)
+            save_jobs()
+
+            thread = threading.Thread(
+                        target=run_download,
+                        name=latest["id"],
+                        args=(
+                            latest["url"],
+                            channel["prefrences"]["output_dir"],
+                            channel["prefrences"]["audio_only"],
+                            channel["prefrences"]["audio_format"],
+                            channel["prefrences"]["filename_template"],
+                            channel["prefrences"]["embed_metadata"],
+                            channel["prefrences"]["embed_thumbnail"],
+                            channel["prefrences"]["add_metadata"],
+                            channel["prefrences"]["move_after"],
+                            channel["prefrences"]["extra_args"],
+                            latest["id"],
+                        ),
+                    )
+
+            thread.start()
+
 THUMB_DIR = f"{CACHE_DIR}/thumb"
 
 

@@ -106,6 +106,12 @@ def api_status(job_id):
 
 @app.route("/api/jobs")
 def api_all_jobs():
+    with open("data/jobs.json") as file:
+        jobs = json.load(file)
+
+    if jobs == None:
+        jobs = []
+
     return jsonify(jobs)
 
 
@@ -251,7 +257,7 @@ def api_videos_downloaded():
                 full_path = os.path.join(root, file)
 
                 rel_path = os.path.relpath(full_path, YOUTUBE_DIR)
-                rel_path = rel_path.replace("\\", "/")  # 🔥 FIX 1
+                rel_path = rel_path.replace("\\", "/")
 
                 thumb_rel_path = os.path.splitext(rel_path)[0] + ".jpg"
                 thumb_rel_path = thumb_rel_path.replace("\\", "/")
@@ -270,10 +276,18 @@ def api_videos_downloaded():
     return jsonify(videos)
 
 
+@app.route("/api/scanOnce")
+def api_scan_once():
+    scan_once()
+    return jsonify({"message": "Scaned", "code": 200}), 200
+
+
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "false").lower() == "true"
-    threading.Thread(target=check_for_videos, daemon=True).start()
-    threading.Thread(target=generate_thumbnail_cache, daemon=True).start()
+    threading.Thread(target=check_for_videos, daemon=True, name="Video Scanner").start()
+    threading.Thread(
+        target=generate_thumbnail_cache, daemon=True, name="Thumbnail Generator"
+    ).start()
     app.run(
         host="0.0.0.0",
         port=5000,

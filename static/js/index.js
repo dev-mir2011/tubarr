@@ -11,6 +11,12 @@ async function thumbnails() {
   await res.json(); // or await res.text()
   location.reload();
 }
+
+async function scanChannels() {
+  const res = await fetch("/api/scanOnce");
+  await res.json();
+  window.location.href = "/jobs";
+}
 async function loadVideos() {
   const grid = document.getElementById("video-grid");
   grid.innerHTML = "Loading...";
