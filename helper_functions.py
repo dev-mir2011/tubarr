@@ -80,7 +80,7 @@ def run_download(
     extra_args,
     job_index,
 ):
-    jobs[job_index]["status"] = "downloading"
+    jobs[-1]["status"] = "downloading"
     save_jobs()
 
     cmd = [sys.executable, "-m", "yt_dlp"]
@@ -114,12 +114,12 @@ def run_download(
             if move_after:
                 move_to_media()
 
-        jobs[job_index]["status"] = "finished"
+        jobs[-1]["status"] = "finished"
         save_jobs()
 
     except Exception as e:
-        jobs[job_index]["status"] = "error"
-        jobs[job_index]["error"] = str(e)
+        jobs[-1]["status"] = "error"
+        jobs[-1]["error"] = str(e)
         save_jobs()
 
 
