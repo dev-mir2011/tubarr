@@ -35,6 +35,7 @@ def jobs_():
 def channels():
     return render_template("chanels.html")
 
+
 @app.route("/settings")
 def settings():
     return render_template("settings.html")
@@ -75,6 +76,7 @@ def api_download():
             add_metadata,
             move_after,
             extra_args,
+            youtube_url_to_id(url),
         ),
     )
 
