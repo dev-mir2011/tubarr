@@ -1,3 +1,9 @@
+## [0.6.6](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.5...v0.6.6) (2026-04-30)
+
+### Bug Fixes
+
+* job index obselete ([e04edd5](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/e04edd586ae1a388ae500cc5417586292962872f))
+
 ## [0.6.5](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.4...v0.6.5) (2026-04-30)
 
 ### Bug Fixes
