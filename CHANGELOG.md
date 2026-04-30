@@ -1,3 +1,9 @@
+## [0.7.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.6...v0.7.0) (2026-04-30)
+
+### Features
+
+* Added single scan endpoint ([69e889b](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/69e889b483e8e252ac1accf07064b50fdfb35f94))
+
 ## [0.6.6](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.5...v0.6.6) (2026-04-30)
 
 ### Bug Fixes
