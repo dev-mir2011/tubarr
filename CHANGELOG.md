@@ -1,3 +1,9 @@
+## [0.6.4](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.3...v0.6.4) (2026-04-30)
+
+### Bug Fixes
+
+* thread not passing id ([c7869ed](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/c7869ed5dafc17ff85e864087094b59e86469169))
+
 ## [0.6.3](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.2...v0.6.3) (2026-04-26)
 
 ### Bug Fixes
