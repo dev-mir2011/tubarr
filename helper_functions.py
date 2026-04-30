@@ -199,6 +199,7 @@ def check_for_videos():
 
                 thread = threading.Thread(
                     target=run_download,
+                    name=latest["id"],
                     args=(
                         latest["url"],
                         channel["prefrences"]["output_dir"],
@@ -210,6 +211,7 @@ def check_for_videos():
                         channel["prefrences"]["add_metadata"],
                         channel["prefrences"]["move_after"],
                         channel["prefrences"]["extra_args"],
+                        latest["id"],
                     ),
                 )
 
