@@ -488,5 +488,13 @@ def scan_playlists_once():
             thread.start()
 
 
+def scan_playlists():
+    with open("data/settings.json") as f:
+        settings = json.load(f)
+    while True:
+        scan_playlists_once()
+        time.sleep(int(settings["scan_playlists_interval"]))
+
+
 if __name__ == "__main__":
     print(scan_playlists_once())
