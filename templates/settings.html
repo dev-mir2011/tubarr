@@ -10,9 +10,11 @@
 
 <body>
     <div class="container flex flex-col gap-4">
-        <a href="/jobs" class="nav-link">Jobs</a>
-        <a href="/channels" class="nav-link">Channels</a>
-        <a href="/" class="nav-link">Home</a>
+        <div class="container">
+            <a href="/jobs" class="nav-link">Jobs</a>
+            <a href="/channels" class="nav-link">Channels</a>
+            <a href="/" class="nav-link">Home</a>
+        </div>
 
         <div>
             <h1 class="text-2xl">Settings</h1>
@@ -28,6 +30,16 @@
                 <input id="channel_scan_interval" class="input font-mono" type="number" />
                 <div class="text-xs text-muted">
                     How often to check subscribed channels
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">
+                    Playlist Scan Interval (seconds)
+                </label>
+                <input id="playlist_scan_interval" class="input font-mono" type="number" />
+                <div class="text-xs text-muted">
+                    How often to check subscribed playlists
                 </div>
             </div>
 

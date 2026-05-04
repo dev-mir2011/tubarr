@@ -203,12 +203,14 @@ def api(app):
                         else {
                             "channel_scan_interval": 86400,
                             "generate_thumbnail_cache_interval": 86400,
+                            "scan_playlists_interval": 86400,
                         }
                     )
             else:
                 settings = {
                     "channel_scan_interval": 86400,
                     "generate_thumbnail_cache_interval": 86400,
+                    "scan_playlists_interval": 86400,
                 }
 
             return jsonify({"code": 200, "settings": settings}), 200
@@ -220,6 +222,7 @@ def api(app):
                 "generate_thumbnail_cache_interval": data[
                     "generate_thumbnail_cache_interval"
                 ],
+                "scan_playlists_interval": data["scan_playlists_interval"],
             }
             with open("data/settings.json", "w") as f:
                 json.dump(settings, f, indent=2)

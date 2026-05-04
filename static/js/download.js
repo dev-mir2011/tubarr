@@ -2,6 +2,23 @@ function load() {
   document.getElementById("url").value = localStorage.getItem("yt-url");
 }
 
+const urlType = document.getElementById("url-type");
+
+urlType.addEventListener("change", function () {
+  console.log("New value:", this.value);
+
+  // example logic
+  if (this.value === "playlist") {
+    console.log("Playlist selected");
+    document.getElementById("filename_template").value =
+      "%(playlist_title)s/%(playlist_index)03d - %(title)s [%(id)s].%(ext)s";
+  } else if (this.value === "video") {
+    console.log("Video selected");
+    document.getElementById("filename_template").value =
+      "%(title)s [%(id)s].%(ext)s";
+  }
+});
+
 const API = "/api/download";
 document.getElementById("downloadBtn").onclick = async () => {
   const status = document.getElementById("status");

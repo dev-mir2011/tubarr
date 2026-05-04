@@ -15,6 +15,7 @@ vscode/
 cache/
 data/
 TODO.md
+NOTES.md
 
 # node deps
 node_modules/

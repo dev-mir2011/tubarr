@@ -2,6 +2,7 @@ const API = "/api/settings";
 
 const channelScan = document.getElementById("channel_scan_interval");
 const thumbScan = document.getElementById("generate_thumbnail_cache_interval");
+const playlistScan = document.getElementById("playlist_scan_interval");
 const status = document.getElementById("status");
 
 document.getElementById("saveBtn").onclick = save;
@@ -16,6 +17,7 @@ async function load() {
     const settings = data.settings;
 
     channelScan.value = settings.channel_scan_interval;
+    playlistScan.value = settings.scan_playlists_interval;
     thumbScan.value = settings.generate_thumbnail_cache_interval;
 
     status.textContent = "";
@@ -30,6 +32,7 @@ async function save() {
   const body = {
     channel_scan_interval: Number(channelScan.value),
     generate_thumbnail_cache_interval: Number(thumbScan.value),
+    scan_playlists_interval: Number(playlistScan.value),
   };
 
   try {

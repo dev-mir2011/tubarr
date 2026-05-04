@@ -11,9 +11,11 @@
 <body>
 
     <div class="container flex flex-col gap-4">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/jobs" class="nav-link">Jobs</a>
-        <a href="/settings" class="nav-link">Settings</a>
+        <div class="container">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/jobs" class="nav-link">Jobs</a>
+            <a href="/settings" class="nav-link">Settings</a>
+        </div>
 
         <div>
             <h1 class="text-2xl">Download</h1>
@@ -26,6 +28,16 @@
             <input id="url" class="input" placeholder="https://youtube.com/..." />
         </div>
 
+        <!-- URL Type -->
+        <div class="flex flex-col gap-1">
+            <label class="text-sm text-muted">URL Type</label>
+            <!-- <input id="url" class="input" placeholder="Video" value="Video" /> -->
+            <select id="url-type" class="select">
+                <option value="playlist">Playlist</option>
+                <option value="video" selected>Video</option>
+            </select>
+        </div>
+
         <!-- Output Dir -->
         <div class="flex flex-col gap-1">
             <label class="text-sm text-muted">Output Directory</label>
@@ -35,8 +47,8 @@
         <!-- filename template -->
         <div class="flex flex-col gap-1">
             <label class="text-sm text-muted">Filename Template</label>
-            <input id="filename_template" class="input font-mono" placeholder="%(title)s.%(ext)s"
-                value="%(title)s.%(ext)s" />
+            <input id="filename_template" class="input font-mono" placeholder="%(title)s [%(id)s].%(ext)s"
+                value="%(title)s [%(id)s].%(ext)s" />
         </div>
 
         <!-- audio format -->

@@ -1,7 +1,7 @@
-from flask import render_template
+from flask import Flask, render_template
 
 
-def frontend(app):
+def frontend(app: Flask):
     @app.route("/")
     def index():
         return render_template("index.html")
@@ -21,3 +21,7 @@ def frontend(app):
     @app.route("/settings")
     def settings():
         return render_template("settings.html")
+
+    @app.route("/playlists")
+    def playlists():
+        return render_template("playlists.html")
