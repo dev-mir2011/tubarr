@@ -17,7 +17,7 @@ async function addPlaylist() {
     .map((x) => x.trim())
     .filter(Boolean);
 
-  const preferences = {
+  const prefrences = {
     output_dir: document.getElementById("output_dir").value || null,
     filename_template:
       document.getElementById("filename_template").value || null,
