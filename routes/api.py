@@ -12,6 +12,7 @@ from helper_functions import (
     build_cache,
     check_for_videos_in_channel,
     clean_rss_feed,
+    create_m3u,
     jobs,
     run_download,
     save_jobs,
@@ -247,10 +248,14 @@ def api(app):
                     thumb_rel_path = os.path.splitext(rel_path)[0] + ".jpg"
                     thumb_rel_path = thumb_rel_path.replace("\\", "/")
 
+                    parts = rel_path.split("/")
+                    channel = parts[0] if len(parts) > 1 else "Unknown"
+
                     videos.append(
                         {
                             "name": file,
                             "path": rel_path,
+                            "channel": channel,
                             "thumbnail": thumb_rel_path,
                             "thumbnail_full": os.path.join(
                                 "cache/thumb", thumb_rel_path
@@ -333,3 +338,10 @@ def api(app):
     def api_scan_playlists_once():
         scan_playlists_once()
         return jsonify({"message": "Scan Complete", "code": 200}), 200
+
+    @app.route("/api/createPlsylistm3u")
+    def api_create_playlist_m3u():
+        folder = request.get("folder")
+        output_file = request.get("playlist_name")
+        create_m3u(folder, output_file)
+        return jsonify({"message": "Playlist generated", "code": 200}), 200

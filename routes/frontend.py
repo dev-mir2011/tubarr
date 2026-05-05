@@ -25,3 +25,11 @@ def frontend(app: Flask):
     @app.route("/playlists")
     def playlists():
         return render_template("playlists.html")
+
+    @app.route("/createPlaylists")
+    def create_playlists():
+        return render_template("playlist_file.html")
+
+    @app.route("/channelNames")
+    def channel_names():
+        return render_template("channel_names.html")

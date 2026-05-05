@@ -15,7 +15,7 @@ urlType.addEventListener("change", function () {
   } else if (this.value === "video") {
     console.log("Video selected");
     document.getElementById("filename_template").value =
-      "%(title)s [%(id)s].%(ext)s";
+      "%(uploader)s/%(title)s [%(id)s].%(ext)s";
   }
 });
 

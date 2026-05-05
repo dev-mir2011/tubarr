@@ -496,5 +496,22 @@ def scan_playlists():
         time.sleep(int(settings["scan_playlists_interval"]))
 
 
+VIDEO_EXTENSIONS = (".mkv", ".mp4", ".webm", ".mov", ".avi", ".mp3", ".m4a")
+
+
+def create_m3u(folder, output_file):
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+
+        for root, _, files in os.walk(folder):
+            for file in sorted(files):
+                if file.lower().endswith(VIDEO_EXTENSIONS):
+                    full_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(full_path, folder)
+                    rel_path = rel_path.replace("\\", "/")
+
+                    f.write(f"{rel_path}\n")
+
+
 if __name__ == "__main__":
-    print(scan_playlists_once())
+    create_m3u("youtube\Kawaii RomCom Mangas", "Kawaii RomCom Mangas.m3")

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Tubarr - Playlists</title>
+</head>
+
+<body>
+    <div class="container flex flex-col gap-4">
+
+        <!-- Navigation -->
+        <div class="container">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/jobs" class="nav-link">Jobs</a>
+            <a href="/settings" class="nav-link">Settings</a>
+            <a href="/channels" class="nav-link">Channels</a>
+            <a href="/playlists" class="nav-link">Playlists</a>
+            <a href="/createPlaylists" class="nav-link">Playlist Creator</a>
+        </div>
+
+        <!-- Header -->
+        <div>
+            <h1 class="text-2xl">Playlist File Creator</h1>
+            <p class="text-sm text-muted">
+                Create A Playlist .m3u file that can be used in Navidrome, jellyfin, etc.
+            </p>
+        </div>
+
+        <!-- Add Playlist Form -->
+        <div class="card p-3 flex flex-col gap-3">
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Playlist Name</label>
+                <input id="playlist-name" class="input" type="text" placeholder="Phonk, HeartBreak, Pain, etc" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label class="text-sm text-muted">Channel or Folder Name</label>
+                <input id="location" class="input" placeholder="Music" value="Music" />
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-2 items-center">
+                <button id="createBtn" class="btn">Create Playlist</button>
+                <div id="status" class="text-sm text-muted"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/playlist_file.js') }}"></script>
+</body>
+
+</html>

@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Tubarr: Download</title>
+    <title>Tubarr - Playlists</title>
 </head>
 
 <body>
-
     <div class="container flex flex-col gap-4">
+
+        <!-- Navigation -->
         <div class="container">
             <a href="/" class="nav-link">Home</a>
             <a href="/jobs" class="nav-link">Jobs</a>
@@ -20,16 +21,20 @@
             <a href="/createPlaylists" class="nav-link">Playlist Creator</a>
         </div>
 
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl">Jobs</h1>
-            <button id="refreshBtn" class="btn">Refresh</button>
+        <!-- Header -->
+        <div>
+            <h1 class="text-2xl">Current Channel Names</h1>
+            <p class="text-sm text-muted">
+                List of Current Folders Created
+            </p>
         </div>
+        <div id="root">
 
-        <div id="jobs" class="flex flex-col gap-2"></div>
+        </div>
 
     </div>
 
-    <script src="{{ url_for('static', filename='js/jobs.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/channel_names.js') }}"></script>
 </body>
 
 </html>
