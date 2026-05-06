@@ -1,3 +1,13 @@
+## [0.9.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.3...v0.9.0) (2026-05-06)
+
+### Features
+
+* added js for playlist creation ([4822dab](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/4822dabe93b8e0bc690d9291a99f969363b05197))
+
+### Bug Fixes
+
+* general purpose fix ([c49a248](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/c49a2482fd37aee61e27b46bbee636b1d5c0bf11))
+
 ## [0.8.3](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.2...v0.8.3) (2026-05-06)
 
 ### Bug Fixes
