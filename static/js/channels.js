@@ -32,7 +32,7 @@ async function addChannel() {
 
   const body = {
     url: document.getElementById("url").value,
-    prefrences: preferences,
+    preferences: preferences,
   };
 
   try {

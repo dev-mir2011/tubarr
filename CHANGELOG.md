@@ -1,3 +1,34 @@
+## [0.8.3](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.2...v0.8.3) (2026-05-06)
+
+### Bug Fixes
+
+* spelling mistake ([bae1ee2](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/bae1ee272fda666ce410dc8ad98ea80a3674e1be))
+
+## [0.8.2](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.1...v0.8.2) (2026-05-06)
+
+### Bug Fixes
+
+* spelling mistake ([195c78c](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/195c78c16b08534263ee910c23054354eb32f33e))
+
+## [0.8.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.0...v0.8.1) (2026-05-06)
+
+### Bug Fixes
+
+* inital file creation error ([3d3a52c](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/3d3a52cba0f33745f8b56179a2050f04bd591874))
+
+## [0.8.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.7.0...v0.8.0) (2026-05-06)
+
+### Features
+
+* added built in playlist .m3u generator ([3745ba1](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/3745ba1e702f906148bef854a4f11601fab4986d))
+* added features ([3473d95](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/3473d95c2017bbc650033a6a2839609e0ebce989))
+* added playlist frontend ([0afc46a](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/0afc46a87d43829d8145c3810573b5268be49a75))
+* added playlist support and mp3 file support ([44c5426](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/44c542627e4e4599e6bb9465adc6cdd06436df89))
+
+### Bug Fixes
+
+* js key error ([d18a782](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/d18a7827fe3b5269a0d1cfde7b893809cf50ba36))
+
 ## [0.7.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.6.6...v0.7.0) (2026-04-30)
 
 ### Features

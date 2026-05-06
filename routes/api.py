@@ -131,7 +131,7 @@ def api(app):
         elif request.method == "POST":
             data = request.get_json()
             url = data.get("url")
-            prefrences = data.get("prefrences")
+            prefrences = data.get("preferences")
 
             if not url:
                 return jsonify({"error": "url required"}), 400
@@ -291,7 +291,7 @@ def api(app):
         elif request.method == "POST":
             data = request.get_json()
             url = data.get("url")
-            prefrences = data.get("prefrences")
+            prefrences = data.get("preferences")
             settings = data.get("settings")
 
             if not url:
