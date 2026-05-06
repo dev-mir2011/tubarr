@@ -1,3 +1,9 @@
+## [0.8.1](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.0...v0.8.1) (2026-05-06)
+
+### Bug Fixes
+
+* inital file creation error ([3d3a52c](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/3d3a52cba0f33745f8b56179a2050f04bd591874))
+
 ## [0.8.0](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.7.0...v0.8.0) (2026-05-06)
 
 ### Features
