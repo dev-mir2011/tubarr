@@ -339,7 +339,7 @@ def api(app):
         scan_playlists_once()
         return jsonify({"message": "Scan Complete", "code": 200}), 200
 
-    @app.route("/api/createPlsylistm3u")
+    @app.route("/api/createPlaylistm3u")
     def api_create_playlist_m3u():
         folder = request.get("folder")
         output_file = request.get("playlist_name")
