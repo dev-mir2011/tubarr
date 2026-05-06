@@ -1,3 +1,9 @@
+## [0.8.3](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.2...v0.8.3) (2026-05-06)
+
+### Bug Fixes
+
+* spelling mistake ([bae1ee2](http://192.168.1.100:3002/dev-mir2011/tubarr/commit/bae1ee272fda666ce410dc8ad98ea80a3674e1be))
+
 ## [0.8.2](http://192.168.1.100:3002/dev-mir2011/tubarr/compare/v0.8.1...v0.8.2) (2026-05-06)
 
 ### Bug Fixes
