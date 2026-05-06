@@ -23,7 +23,14 @@ if __name__ == "__main__":
             json.dump([], file)
     if not Path("data/settings.json").exists():
         with open("data/settings.json", "w") as file:
-            json.dump({}, file)
+            json.dump(
+                {
+                    "channel_scan_interval": 3600,
+                    "generate_thumbnail_cache_interval": 3600,
+                    "scan_playlists_interval": 3600,
+                },
+                file,
+            )
 
     # inital daemon intialization and debug environment variable extraction
     debug = os.getenv("DEBUG", "false").lower() == "true"

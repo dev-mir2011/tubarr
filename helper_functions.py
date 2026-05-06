@@ -500,7 +500,7 @@ VIDEO_EXTENSIONS = (".mkv", ".mp4", ".webm", ".mov", ".avi", ".mp3", ".m4a")
 
 
 def create_m3u(folder, output_file):
-    with open(output_file, "w", encoding="utf-8") as f:
+    with open(f"youtube/{output_file}", "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
 
         for root, _, files in os.walk(folder):
