@@ -13,16 +13,16 @@ from helper_functions import (
 if __name__ == "__main__":
     # inital file checks
     if not Path("data/jobs.json").exists():
-        with open("data/jobs.json") as file:
+        with open("data/jobs.json", "w") as file:
             json.dump([], file)
     if not Path("data/channels.json").exists():
-        with open("data/channels.json") as file:
+        with open("data/channels.json", "w") as file:
             json.dump([], file)
     if not Path("data/playlists.json").exists():
-        with open("data/playlists.json") as file:
+        with open("data/playlists.json", "w") as file:
             json.dump([], file)
     if not Path("data/settings.json").exists():
-        with open("data/settings.json") as file:
+        with open("data/settings.json", "w") as file:
             json.dump({}, file)
 
     # inital daemon intialization and debug environment variable extraction
