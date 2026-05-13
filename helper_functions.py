@@ -499,6 +499,8 @@ def scan_playlists():
 VIDEO_EXTENSIONS = (".mkv", ".mp4", ".webm", ".mov", ".avi", ".mp3", ".m4a")
 
 
+import os
+
 def create_m3u(folder, output_file):
     with open(f"youtube/{output_file}", "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -506,11 +508,10 @@ def create_m3u(folder, output_file):
         for root, _, files in os.walk(folder):
             for file in sorted(files):
                 if file.lower().endswith(VIDEO_EXTENSIONS):
-                    full_path = os.path.join(root, file)
-                    rel_path = os.path.relpath(full_path, folder)
-                    rel_path = rel_path.replace("\\", "/")
+                    full_path = os.path.abspath(os.path.join(root, file))
+                    full_path = full_path.replace("\\", "/")
 
-                    f.write(f"{rel_path}\n")
+                    f.write(f"{full_path}\n")
 
 
 if __name__ == "__main__":
